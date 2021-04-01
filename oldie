@@ -1,0 +1,469 @@
+stop();
+stage.scaleMode = "noScale";
+stage.align = "LT";
+//stage.showDefaultContextMenu = false;
+/*Le contenu de cette Frame constitue le Fond general du HUD
+en 4 principaux sprites non-étirables no vector contenant chacun une partie du HUD ainsi que les sprites étirables
+contenant eux les RASTERS servant à l'extension de la définition des devices.
+Les éléments sont rajoutés sur le bloc 'Fin Hud'*/
+import lowfl.transitions.Tween;// 
+import lowfl.transitions.easing.*; // 
+import lowfl.transitions.TweenEvent;
+		
+var zoom:Number = 1;
+var zoom2Var=0;
+var map;
+
+var pictURLMap:String;
+var pictURLReqMap:URLRequest;
+var resizePossible:String;
+var spriteUrlFin:Sprite = new Sprite();
+var chargeurUrlFin:Loader;
+var requeteUrlFin:URLRequest;
+var urlFin:String;
+
+// Sprite de la Soute
+var spriteSoute : Sprite = new Sprite();spriteSoute.visible = false;
+
+// Sprite de la Redemption
+var spriteRed : Sprite = new Sprite();spriteRed.visible = false;
+
+// Sprite du Briseur
+var spriteBri : Sprite = new Sprite();spriteBri.visible = false;
+
+// Sprite Gouffre (accès Mer intérieur)  id unique
+var spriteLidenbrock : Sprite = new Sprite();spriteLidenbrock.visible = false;
+
+// Sprite du Bet voisin
+var spriteBetV : Sprite = new Sprite();spriteBetV.visible = false;
+
+// Sprite de la Caste
+var spriteCaste : Sprite = new Sprite();spriteCaste.visible = false;
+
+// Sprite de l'ICHTIC (plus le cuvelage géant)
+var spriteIcht : Sprite = new Sprite();spriteIcht.visible = false;
+
+// Sprite des Zones
+var spriteZone : Sprite = new Sprite();spriteZone.visible = false;
+
+// Sprite des Quetes
+var spriteQuete : Sprite = new Sprite();spriteQuete.visible = false;
+
+// Sprite de Kipini Alpha
+var spriteKipi : Sprite = new Sprite();spriteKipi.visible = false;
+
+// Sprite de l'help
+var spriteHelp : Sprite = new Sprite();spriteHelp.visible = false;
+
+// Sprite de la Redemption
+var spriteRed : Sprite = new Sprite();spriteRed.visible = false;
+
+// Sprite Ponton
+var spritePont : Sprite = new Sprite();spritePont.visible = false;
+
+// Sprite ETIC
+var spriteEtic : Sprite = new Sprite();spriteEtic.visible = false;
+
+// Sprite des trois Corridors vomitifs frappant ETIC.
+var spriteCOOrs : Sprite = new Sprite();spriteCOOrs.visible = false;
+
+// Sprite du dronage
+var spriteDrone : Sprite = new Sprite();spriteDrone.visible = false;
+
+// BETRAYAL
+var bet : betrayalRun = new betrayalRun();
+
+// Sprite de la Map
+var spriteMap : Sprite = new Sprite();
+
+// Sprite du Hud1
+var spriteHud1 : Sprite = new Sprite();
+var hud1 : Hud1 = new Hud1();
+// Sprite du Hud2
+var spriteHud2 : Sprite = new Sprite();
+var hud2 : Hud2 = new Hud2();
+// Sprite du Hud3
+var spriteHud3 : Sprite = new Sprite();
+var hud3 : Hud3 = new Hud3();
+// Sprite du Hud4
+var spriteHud4 : Sprite = new Sprite();
+var hud4 : Hud4 = new Hud4();
+// Sprite du HudCssHeader
+var spriteHudCssHeader : Sprite = new Sprite();
+var hudCssHeader : HudCssHeader = new HudCssHeader();
+// Sprite du HudCssFooter
+var spriteHudCssFooter : Sprite = new Sprite();
+var hudCssFooter : HudCssFooter = new HudCssFooter();
+// Sprite du HudCssLeft
+var spriteHudCssLeft : Sprite = new Sprite();
+var hudCssLeft : HudCssLeft = new HudCssLeft();
+// Sprite du HudCssRight
+var spriteHudCssRight : Sprite = new Sprite();
+var hudCssRight : HudCssRight = new HudCssRight();
+
+// Positionnement du Repere MiniMercator
+var repereMiniMercator : MovieClipCarre = new MovieClipCarre();
+
+// Composant du cadran du MiniMercator
+var spriteCadranMiniMercator:Sprite = new Sprite();
+var m_sTrajet0:Sprite = new Sprite();
+var m_sTrajet1:Sprite = new Sprite();
+var m_sTrajet2:Sprite = new Sprite();
+var m_sTrajet3:Sprite = new Sprite();
+var divX;
+var divY;
+var resoX;
+var resoY;
+var ajoutX;
+var ajoutY;
+var calculX;
+var calculY;
+// Sprite du Hud2
+var hud2X;
+// Sprite du Hud3
+var hud3Y;
+// Sprite du Hud4
+var hud4X;
+var hud4Y;
+// Sprite du HudCssHeader
+var stageHeader;
+var hud1MHud2;
+var rsHud1MHud2;
+// Sprite du HudCssFooter
+var stageFooter;
+var hud3MHud4;
+var rsHud3MHud4;
+var hudCssFooterY;
+// Sprite du HudCssLeft
+var stageLeft;
+var hud1MHud3;
+var rsHud1MHud3;
+// Sprite du HudCssRight
+var hudCssRightX;
+var stageRight;
+var hud2MHud4;
+var rsHud2MHud4;
+
+if(zoom==1){gotoAndStop(3);}
+
+var imageAmulette:Bitmap;var imageMainDroite:Bitmap;var imageMainGauche:Bitmap;var imageCeinturon:Bitmap;var imageObjet:Bitmap;var imageJambieres:Bitmap;
+var imageCuirasse:Bitmap;var imageAnneau:Bitmap;var imageHeaume:Bitmap;var imageOutil:Bitmap;
+
+var imageSac1:Bitmap;var imageSac2:Bitmap;var imageSac3:Bitmap;var imageSac4:Bitmap;var imageSac5:Bitmap;var imageSac6:Bitmap;var imageSac7:Bitmap;
+var imageSac8:Bitmap;var imageSac9:Bitmap;var imageSac10:Bitmap;var imageSac11:Bitmap;var imageSac12:Bitmap;var imageSac13:Bitmap;
+var imageSac14:Bitmap;var imageSac15:Bitmap;var imageSac16:Bitmap;
+var imageMedaille1:Bitmap;var imageMedaille2:Bitmap;var imageMedaille3:Bitmap;var imageMedaille4:Bitmap;
+
+var blop;
+addEventListener(Event.ENTER_FRAME,rotate);
+
+//stage.addEventListener(MouseEvent.MOUSE_DOWN,deplacement);
+function deplacement(event:Event):void
+{	var deplacementXBalle;
+	var deplacementYBalle;
+	
+	var destinationXBalle;
+	var destinationYBalle;
+	
+	var deplacementSecXBalle;
+	var deplacementSecYBalle;
+	
+	destinationXBalle=this.mouseX;
+	destinationYBalle=this.mouseY;
+	
+	deplacementXBalle = Math.abs(destinationXBalle-Math.ceil(Balle.x));
+	deplacementYBalle = Math.abs(destinationYBalle-Math.ceil(Balle.y));
+		
+	if(deplacementXBalle<deplacementYBalle)
+	{	deplacementSecXBalle = deplacementXBalle/deplacementYBalle;
+		deplacementSecYBalle = 1;
+	}
+	if(deplacementXBalle>deplacementYBalle)
+	{	deplacementSecXBalle = 1;
+		deplacementSecYBalle = deplacementYBalle/deplacementXBalle;
+	}
+		
+	var myTimer : Timer = new Timer(500);
+		myTimer.addEventListener(TimerEvent.TIMER, myTimerF);
+		myTimer.start();
+	function myTimerF(Tevt:TimerEvent):void
+	{	if(Math.ceil(Balle.x)==destinationXBalle && Math.ceil(Balle.y)==destinationYBalle)
+		{	myTimer.stop();
+		}
+		
+		if(Math.ceil(Balle.x)<destinationXBalle)
+		{	Balle.x = Balle.x + deplacementSecXBalle;
+		}
+		if(Math.ceil(Balle.x)>destinationXBalle)
+		{	Balle.x = Balle.x - deplacementSecXBalle;
+		}
+		if(Math.ceil(Balle.y)<destinationYBalle)
+		{	Balle.y = Balle.y + deplacementSecYBalle;
+		}
+		if(Math.ceil(Balle.y)>destinationYBalle)
+		{	Balle.y = Balle.y - deplacementSecYBalle;
+		}
+	}
+}
+
+function envoiFluxRadar(Tevt:TimerEvent):void
+{	if(zoom2Var==2)
+	{	if(Total>=1){spriteFond.removeChild(spriteRadarMap);Total=0;}
+
+		rand35 = Math.floor(10000*Math.random());
+		requeteHTTPRadar = new URLRequest("http://www.tem-la-firme.com);
+		envoiRadar = new URLLoader();
+		envoiRadar.load(requeteHTTPRadar);
+		envoiRadar.addEventListener(Event.COMPLETE, radarComplet);
+		envoiRadar.addEventListener(IOErrorEvent.IO_ERROR, ioerror1);
+	
+		if(niveauRadiation <= 40 && Brouille=="non"){radaron.visible=true;radarsnow.visible=false;radaroff.visible=false;}
+		if(niveauRadiation > 40 && Brouille=="non"){radaron.visible=false;radarsnow.visible=true;radaroff.visible=false;}
+		if(Brouille=="oui" && lvlUltro<=3){radaron.visible=false;radarsnow.visible=true;radaroff.visible=false;}
+		if(Brouille=="oui" && lvlUltro>=4){radaron.visible=true;radarsnow.visible=false;radaroff.visible=false;}
+	}
+}
+	
+function radarComplet(event:Event):void 
+{	var ty=0;
+	var reponse=0;
+	var myTimerMAJ : Timer = new Timer(1000);
+	myTimerMAJ.addEventListener( TimerEvent.TIMER, envoiMAJ);
+	
+	myTimerMAJ.start();
+	
+	function envoiMAJ(Tevt:TimerEvent):void
+	{	var requeteHTTP:URLRequest;
+		var envoi:URLLoader;
+		var chargeur:URLLoader;
+		var adresse:URLRequest;
+		var format;
+		var contenu;
+		var donnees:XML;
+		var series:XMLList;
+		var premierTitre:XML;
+
+		chargeur = new URLLoader();
+		adresse = new URLRequest ("http://www.uotf2.com"+idj+"?rand="+randx-x);
+		format = URLLoaderDataFormat.TEXT;
+		chargeur.dataFormat = format;
+		chargeur.load(adresse);
+		chargeur.addEventListener(Event.COMPLETE, finDuChargement);
+		chargeur.addEventListener(IOErrorEvent.IO_ERROR, indiquerErreur);
+		function finDuChargement ( event:Event ) 
+		{	contenu = event.target.data;
+			donnees = new XML (contenu);
+			series = donnees.serie;
+			premierTitre = series[0];
+		
+			reponse = premierTitre.reponse;
+			messagerie1 = premierTitre.Messagerie;
+			
+			ty=reponse;
+			
+			if(messagerie1==1){AlertMP.visible=true;}
+			if(messagerie1==0){AlertMP.visible=false;}
+			
+			if(ty==1)
+			{	myTimerMAJ.stop();
+					
+				chargeurRadar = new URLLoader();
+				adresseRadar = new URLRequest ("http://www.uotf2.com"+idj++".xml?rand="+randx-x);
+				formatRadar = URLLoaderDataFormat.TEXT;
+				chargeurRadar.dataFormat = formatRadar;
+				chargeurRadar.load(adresseRadar);
+				chargeurRadar.addEventListener(Event.COMPLETE, finDuChargementRadar);
+				chargeurRadar.addEventListener(ProgressEvent.PROGRESS, progressRadar);
+				
+				function progressRadar(e:ProgressEvent):void{trace("Chargement radar");}
+				function finDuChargementRadar ( event:Event ) 
+				{	contenuRadar = event.target.data;
+					donneesRadar = new XML (contenuRadar);
+
+					seriesRadar = new XMLList();
+					premierTitreRadar = new XML();
+					seriesRadar = donneesRadar.serie;
+					premierTitreRadar = seriesRadar[0];
+					presenceV1=0;presenceV2=0;presenceV3=0;presenceV4=0;presenceV5=0;presenceV6=0;presenceV7=0;presenceV8=0;presenceV9=0;presenceV10=0;
+					presenceV11=0;presenceV12=0;presenceV13=0;presenceV14=0;presenceV15=0;presenceV16=0;presenceV17=0;presenceV18=0;presenceV19=0;presenceV20=0;
+					
+					Total=0;
+					Total=premierTitreRadar.Total;
+					
+					TotalPresence=0;
+					TotalPresence=premierTitreRadar.TotalPresence;
+					
+					// Chargement son
+					if(TotalPresence>=1 && joueSonRadar==1){canalRythmeIntOnRadar = rythmeIntOnRadarTic.play();}
+					
+					if(ZoneIdobj0>=1 && ZoneIdobj0<=9998){ZoneIdobj0=0;ZoneGfxObjet0="Vide";ZoneNomObjet0="Vide";ZoneDescObjet0="Vide";
+						ZoneGfx0="Vide";ZoneConsoObjet0=0;zone0Presence=0;spriteFond.removeChild(spriteGfx0);}
+					if(ZoneIdobj1>=1 && ZoneIdobj1<=9998){ZoneIdobj1=0;ZoneGfxObjet1="Vide";ZoneNomObjet1="Vide";ZoneDescObjet1="Vide";
+						ZoneGfx1="Vide";ZoneConsoObjet1=0;zone1Presence=0;spriteFond.removeChild(spriteGfx1);}
+					if(ZoneIdobj2>=1 && ZoneIdobj2<=9998){ZoneIdobj2=0;ZoneGfxObjet2="Vide";ZoneNomObjet2="Vide";ZoneDescObjet2="Vide";
+						ZoneGfx2="Vide";ZoneConsoObjet2=0;zone2Presence=0;spriteFond.removeChild(spriteGfx2);}
+					if(ZoneIdobj3>=1 && ZoneIdobj3<=9998){ZoneIdobj3=0;ZoneGfxObjet3="Vide";ZoneNomObjet3="Vide";ZoneDescObjet3="Vide";
+						ZoneGfx3="Vide";ZoneConsoObjet3=0;zone3Presence=0;spriteFond.removeChild(spriteGfx3);}
+					if(ZoneIdobj4>=1 && ZoneIdobj4<=9998){ZoneIdobj4=0;ZoneGfxObjet4="Vide";ZoneNomObjet4="Vide";ZoneDescObjet4="Vide";
+						ZoneGfx4="Vide";ZoneConsoObjet4=0;zone4Presence=0;spriteFond.removeChild(spriteGfx4);}
+					if(ZoneIdobj5>=1 && ZoneIdobj5<=9998){ZoneIdobj5=0;ZoneGfxObjet5="Vide";ZoneNomObjet5="Vide";ZoneDescObjet5="Vide";
+						ZoneGfx5="Vide";ZoneConsoObjet5=0;zone5Presence=0;spriteFond.removeChild(spriteGfx5);}
+					if(ZoneIdobj6>=1 && ZoneIdobj6<=9998){ZoneIdobj6=0;ZoneGfxObjet6="Vide";ZoneNomObjet6="Vide";ZoneDescObjet6="Vide";
+						ZoneGfx6="Vide";ZoneConsoObjet6=0;zone6Presence=0;spriteFond.removeChild(spriteGfx6);}
+					if(ZoneIdobj7>=1 && ZoneIdobj7<=9998){ZoneIdobj7=0;ZoneGfxObjet7="Vide";ZoneNomObjet7="Vide";ZoneDescObjet7="Vide";
+						ZoneGfx7="Vide";ZoneConsoObjet7=0;zone7Presence=0;spriteFond.removeChild(spriteGfx7);}
+					if(ZoneIdobj8>=1 && ZoneIdobj8<=9998){ZoneIdobj8=0;ZoneGfxObjet8="Vide";ZoneNomObjet8="Vide";ZoneDescObjet8="Vide";
+						ZoneGfx8="Vide";ZoneConsoObjet8=0;zone8Presence=0;spriteFond.removeChild(spriteGfx8);}
+					if(ZoneIdobj9>=1 && ZoneIdobj9<=9998){ZoneIdobj9=0;ZoneGfxObjet9="Vide";ZoneNomObjet9="Vide";ZoneDescObjet9="Vide";
+						ZoneGfx9="Vide";ZoneConsoObjet9=0;zone9Presence=0;spriteFond.removeChild(spriteGfx9);}
+					if(ZoneIdobj10>=1 && ZoneIdobj10<=9998){ZoneIdobj10=0;ZoneGfxObjet10="Vide";ZoneNomObjet10="Vide";ZoneDescObjet10="Vide";
+						ZoneGfx10="Vide";ZoneConsoObjet10=0;zone10Presence=0;spriteFond.removeChild(spriteGfx10);}
+					if(ZoneIdobj11>=1 && ZoneIdobj11<=9998){ZoneIdobj11=0;ZoneGfxObjet11="Vide";ZoneNomObjet11="Vide";ZoneDescObjet11="Vide";
+						ZoneGfx11="Vide";ZoneConsoObjet11=0;zone11Presence=0;spriteFond.removeChild(spriteGfx11);}
+					if(ZoneIdobj12>=1 && ZoneIdobj12<=9998){ZoneIdobj12=0;ZoneGfxObjet12="Vide";ZoneNomObjet12="Vide";ZoneDescObjet12="Vide";
+						ZoneGfx12="Vide";ZoneConsoObjet12=0;zone12Presence=0;spriteFond.removeChild(spriteGfx12);}
+					if(ZoneIdobj13>=1 && ZoneIdobj13<=9998){ZoneIdobj13=0;ZoneGfxObjet13="Vide";ZoneNomObjet13="Vide";ZoneDescObjet13="Vide";
+						ZoneGfx13="Vide";ZoneConsoObjet13=0;zone13Presence=0;spriteFond.removeChild(spriteGfx13);}
+					if(ZoneIdobj14>=1 && ZoneIdobj14<=9998){ZoneIdobj14=0;ZoneGfxObjet14="Vide";ZoneNomObjet14="Vide";ZoneDescObjet14="Vide";
+						ZoneGfx14="Vide";ZoneConsoObjet14=0;zone14Presence=0;spriteFond.removeChild(spriteGfx14);}
+					if(ZoneIdobj15>=1 && ZoneIdobj15<=9998){ZoneIdobj15=0;ZoneGfxObjet15="Vide";ZoneNomObjet15="Vide";ZoneDescObjet15="Vide";
+						ZoneGfx15="Vide";ZoneConsoObjet15=0;zone15Presence=0;spriteFond.removeChild(spriteGfx15);}
+					if(ZoneIdobj16>=1 && ZoneIdobj16<=9998){ZoneIdobj16=0;ZoneGfxObjet16="Vide";ZoneNomObjet16="Vide";ZoneDescObjet16="Vide";
+						ZoneGfx16="Vide";ZoneConsoObjet16=0;zone16Presence=0;spriteFond.removeChild(spriteGfx16);}
+					if(ZoneIdobj17>=1 && ZoneIdobj17<=9998){ZoneIdobj17=0;ZoneGfxObjet17="Vide";ZoneNomObjet17="Vide";ZoneDescObjet17="Vide";
+						ZoneGfx17="Vide";ZoneConsoObjet17=0;zone17Presence=0;spriteFond.removeChild(spriteGfx17);}
+					if(ZoneIdobj18>=1 && ZoneIdobj18<=9998){ZoneIdobj18=0;ZoneGfxObjet18="Vide";ZoneNomObjet18="Vide";ZoneDescObjet18="Vide";
+						ZoneGfx18="Vide";ZoneConsoObjet18=0;zone18Presence=0;spriteFond.removeChild(spriteGfx18);}
+					if(ZoneIdobj19>=1 && ZoneIdobj19<=9998){ZoneIdobj19=0;ZoneGfxObjet19="Vide";ZoneNomObjet19="Vide";ZoneDescObjet19="Vide";
+						ZoneGfx19="Vide";ZoneConsoObjet19=0;zone19Presence=0;spriteFond.removeChild(spriteGfx19);}
+					if(ZoneIdobj20>=1 && ZoneIdobj20<=9998){ZoneIdobj20=0;ZoneGfxObjet20="Vide";ZoneNomObjet20="Vide";ZoneDescObjet20="Vide";
+						ZoneGfx20="Vide";ZoneConsoObjet20=0;zone20Presence=0;spriteFond.removeChild(spriteGfx20);}
+					if(ZoneIdobj21>=1 && ZoneIdobj21<=9998){ZoneIdobj21=0;ZoneGfxObjet21="Vide";ZoneNomObjet21="Vide";ZoneDescObjet21="Vide";
+						ZoneGfx21="Vide";ZoneConsoObjet21=0;zone21Presence=0;spriteFond.removeChild(spriteGfx21);}
+					if(ZoneIdobj22>=1 && ZoneIdobj22<=9998){ZoneIdobj22=0;ZoneGfxObjet22="Vide";ZoneNomObjet22="Vide";ZoneDescObjet22="Vide";
+						ZoneGfx22="Vide";ZoneConsoObjet22=0;zone22Presence=0;spriteFond.removeChild(spriteGfx22);}
+					if(ZoneIdobj23>=1 && ZoneIdobj23<=9998){ZoneIdobj23=0;ZoneGfxObjet23="Vide";ZoneNomObjet23="Vide";ZoneDescObjet23="Vide";
+						ZoneGfx23="Vide";ZoneConsoObjet23=0;zone23Presence=0;spriteFond.removeChild(spriteGfx23);}
+					if(ZoneIdobj24>=1 && ZoneIdobj24<=9998){ZoneIdobj24=0;ZoneGfxObjet24="Vide";ZoneNomObjet24="Vide";ZoneDescObjet24="Vide";
+						ZoneGfx24="Vide";ZoneConsoObjet24=0;zone24Presence=0;spriteFond.removeChild(spriteGfx24);}
+					
+					ZoneIdobj0=premierTitreRadar.ZoneIdobj0;
+					ZoneIdobj1=premierTitreRadar.ZoneIdobj1;ZoneIdobj2=premierTitreRadar.ZoneIdobj2;ZoneIdobj3=premierTitreRadar.ZoneIdobj3;
+					ZoneIdobj4=premierTitreRadar.ZoneIdobj4;ZoneIdobj5=premierTitreRadar.ZoneIdobj5;ZoneIdobj6=premierTitreRadar.ZoneIdobj6;
+					ZoneIdobj7=premierTitreRadar.ZoneIdobj7;ZoneIdobj8=premierTitreRadar.ZoneIdobj8;ZoneIdobj9=premierTitreRadar.ZoneIdobj9;
+					ZoneIdobj10=premierTitreRadar.ZoneIdobj10;ZoneIdobj11=premierTitreRadar.ZoneIdobj11;ZoneIdobj12=premierTitreRadar.ZoneIdobj12;
+					ZoneIdobj13=premierTitreRadar.ZoneIdobj13;ZoneIdobj14=premierTitreRadar.ZoneIdobj14;ZoneIdobj15=premierTitreRadar.ZoneIdobj15;
+					ZoneIdobj16=premierTitreRadar.ZoneIdobj16;ZoneIdobj17=premierTitreRadar.ZoneIdobj17;ZoneIdobj18=premierTitreRadar.ZoneIdobj18;
+					ZoneIdobj19=premierTitreRadar.ZoneIdobj19;ZoneIdobj20=premierTitreRadar.ZoneIdobj20;ZoneIdobj21=premierTitreRadar.ZoneIdobj21;
+					ZoneIdobj22=premierTitreRadar.ZoneIdobj22;ZoneIdobj23=premierTitreRadar.ZoneIdobj23;ZoneIdobj24=premierTitreRadar.ZoneIdobj24;
+					
+					ZoneGfx0=premierTitreRadar.ZoneGfx0;
+					ZoneGfx1=premierTitreRadar.ZoneGfx1;ZoneGfx2=premierTitreRadar.ZoneGfx2;ZoneGfx3=premierTitreRadar.ZoneGfx3;ZoneGfx4=premierTitreRadar.ZoneGfx4;
+					ZoneGfx5=premierTitreRadar.ZoneGfx5;ZoneGfx6=premierTitreRadar.ZoneGfx6;ZoneGfx7=premierTitreRadar.ZoneGfx7;ZoneGfx8=premierTitreRadar.ZoneGfx8;
+					ZoneGfx9=premierTitreRadar.ZoneGfx9;ZoneGfx10=premierTitreRadar.ZoneGfx10;ZoneGfx11=premierTitreRadar.ZoneGfx11;ZoneGfx12=premierTitreRadar.ZoneGfx12;
+					ZoneGfx13=premierTitreRadar.ZoneGfx13;ZoneGfx14=premierTitreRadar.ZoneGfx14;ZoneGfx15=premierTitreRadar.ZoneGfx15;ZoneGfx16=premierTitreRadar.ZoneGfx16;
+					ZoneGfx17=premierTitreRadar.ZoneGfx17;ZoneGfx18=premierTitreRadar.ZoneGfx18;ZoneGfx19=premierTitreRadar.ZoneGfx19;ZoneGfx20=premierTitreRadar.ZoneGfx20;
+					ZoneGfx21=premierTitreRadar.ZoneGfx21;ZoneGfx22=premierTitreRadar.ZoneGfx22;ZoneGfx23=premierTitreRadar.ZoneGfx23;ZoneGfx24=premierTitreRadar.ZoneGfx24;
+
+					ZoneNomObjet0=premierTitreRadar.ZoneNomObjet0;
+					ZoneNomObjet1=premierTitreRadar.ZoneNomObjet1;ZoneNomObjet2=premierTitreRadar.ZoneNomObjet2;ZoneNomObjet3=premierTitreRadar.ZoneNomObjet3;
+					ZoneNomObjet4=premierTitreRadar.ZoneNomObjet4;ZoneNomObjet5=premierTitreRadar.ZoneNomObjet5;ZoneNomObjet6=premierTitreRadar.ZoneNomObjet6;
+					ZoneNomObjet7=premierTitreRadar.ZoneNomObjet7;ZoneNomObjet8=premierTitreRadar.ZoneNomObjet8;ZoneNomObjet9=premierTitreRadar.ZoneNomObjet9;
+					ZoneNomObjet10=premierTitreRadar.ZoneNomObjet10;ZoneNomObjet11=premierTitreRadar.ZoneNomObjet11;ZoneNomObjet12=premierTitreRadar.ZoneNomObjet12;
+					ZoneNomObjet13=premierTitreRadar.ZoneNomObjet13;ZoneNomObjet14=premierTitreRadar.ZoneNomObjet14;ZoneNomObjet15=premierTitreRadar.ZoneNomObjet15;
+					ZoneNomObjet16=premierTitreRadar.ZoneNomObjet16;ZoneNomObjet17=premierTitreRadar.ZoneNomObjet17;ZoneNomObjet18=premierTitreRadar.ZoneNomObjet18;
+					ZoneNomObjet19=premierTitreRadar.ZoneNomObjet19;ZoneNomObjet20=premierTitreRadar.ZoneNomObjet20;ZoneNomObjet21=premierTitreRadar.ZoneNomObjet21;
+					ZoneNomObjet22=premierTitreRadar.ZoneNomObjet22;ZoneNomObjet23=premierTitreRadar.ZoneNomObjet23;ZoneNomObjet24=premierTitreRadar.ZoneNomObjet24;
+				
+					ZoneConsoObjet0=premierTitreRadar.ZoneConsoObjet0;
+					ZoneConsoObjet1=premierTitreRadar.ZoneConsoObjet1;ZoneConsoObjet2=premierTitreRadar.ZoneConsoObjet2;ZoneConsoObjet3=premierTitreRadar.ZoneConsoObjet3;
+					ZoneConsoObjet4=premierTitreRadar.ZoneConsoObjet4;ZoneConsoObjet5=premierTitreRadar.ZoneConsoObjet5;ZoneConsoObjet6=premierTitreRadar.ZoneConsoObjet6;
+					ZoneConsoObjet7=premierTitreRadar.ZoneConsoObjet7;ZoneConsoObjet8=premierTitreRadar.ZoneConsoObjet8;ZoneConsoObjet9=premierTitreRadar.ZoneConsoObjet9;
+					ZoneConsoObjet10=premierTitreRadar.ZoneConsoObjet10;ZoneConsoObjet11=premierTitreRadar.ZoneConsoObjet11;ZoneConsoObjet12=premierTitreRadar.ZoneConsoObjet12;
+					ZoneConsoObjet13=premierTitreRadar.ZoneConsoObjet13;ZoneConsoObjet14=premierTitreRadar.ZoneConsoObjet14;ZoneConsoObjet15=premierTitreRadar.ZoneConsoObjet15;
+					ZoneConsoObjet16=premierTitreRadar.ZoneConsoObjet16;ZoneConsoObjet17=premierTitreRadar.ZoneConsoObjet17;ZoneConsoObjet18=premierTitreRadar.ZoneConsoObjet18;
+					ZoneConsoObjet19=premierTitreRadar.ZoneConsoObjet19;ZoneConsoObjet20=premierTitreRadar.ZoneConsoObjet20;ZoneConsoObjet21=premierTitreRadar.ZoneConsoObjet21;
+					ZoneConsoObjet22=premierTitreRadar.ZoneConsoObjet22;ZoneConsoObjet23=premierTitreRadar.ZoneConsoObjet23;ZoneConsoObjet24=premierTitreRadar.ZoneConsoObjet24;
+		
+					ZoneGfxObjet0=premierTitreRadar.ZoneGfxObjet0;
+					ZoneGfxObjet1=premierTitreRadar.ZoneGfxObjet1;ZoneGfxObjet2=premierTitreRadar.ZoneGfxObjet2;ZoneGfxObjet3=premierTitreRadar.ZoneGfxObjet3;
+					ZoneGfxObjet4=premierTitreRadar.ZoneGfxObjet4;ZoneGfxObjet5=premierTitreRadar.ZoneGfxObjet5;ZoneGfxObjet6=premierTitreRadar.ZoneGfxObjet6;
+					ZoneGfxObjet7=premierTitreRadar.ZoneGfxObjet7;ZoneGfxObjet8=premierTitreRadar.ZoneGfxObjet8;ZoneGfxObjet9=premierTitreRadar.ZoneGfxObjet9;
+					ZoneGfxObjet10=premierTitreRadar.ZoneGfxObjet10;ZoneGfxObjet11=premierTitreRadar.ZoneGfxObjet11;ZoneGfxObjet12=premierTitreRadar.ZoneGfxObjet12;
+					ZoneGfxObjet13=premierTitreRadar.ZoneGfxObjet13;ZoneGfxObjet14=premierTitreRadar.ZoneGfxObjet14;ZoneGfxObjet15=premierTitreRadar.ZoneGfxObjet15;
+					ZoneGfxObjet16=premierTitreRadar.ZoneGfxObjet16;ZoneGfxObjet17=premierTitreRadar.ZoneGfxObjet17;ZoneGfxObjet18=premierTitreRadar.ZoneGfxObjet18;
+					ZoneGfxObjet19=premierTitreRadar.ZoneGfxObjet19;ZoneGfxObjet20=premierTitreRadar.ZoneGfxObjet20;ZoneGfxObjet21=premierTitreRadar.ZoneGfxObjet21;
+					ZoneGfxObjet22=premierTitreRadar.ZoneGfxObjet22;ZoneGfxObjet23=premierTitreRadar.ZoneGfxObjet23;ZoneGfxObjet24=premierTitreRadar.ZoneGfxObjet24;
+
+					ZoneDescObjet0=premierTitreRadar.ZoneDescObjet0;
+					ZoneDescObjet1=premierTitreRadar.ZoneDescObjet1;ZoneDescObjet2=premierTitreRadar.ZoneDescObjet2;ZoneDescObjet3=premierTitreRadar.ZoneDescObjet3;
+					ZoneDescObjet4=premierTitreRadar.ZoneDescObjet4;ZoneDescObjet5=premierTitreRadar.ZoneDescObjet5;ZoneDescObjet6=premierTitreRadar.ZoneDescObjet6;
+					ZoneDescObjet7=premierTitreRadar.ZoneDescObjet7;ZoneDescObjet8=premierTitreRadar.ZoneDescObjet8;ZoneDescObjet9=premierTitreRadar.ZoneDescObjet9;
+					ZoneDescObjet10=premierTitreRadar.ZoneDescObjet10;ZoneDescObjet11=premierTitreRadar.ZoneDescObjet11;ZoneDescObjet12=premierTitreRadar.ZoneDescObjet12;
+					ZoneDescObjet13=premierTitreRadar.ZoneDescObjet13;ZoneDescObjet14=premierTitreRadar.ZoneDescObjet14;ZoneDescObjet15=premierTitreRadar.ZoneDescObjet15;
+					ZoneDescObjet16=premierTitreRadar.ZoneDescObjet16;ZoneDescObjet17=premierTitreRadar.ZoneDescObjet17;ZoneDescObjet18=premierTitreRadar.ZoneDescObjet18;
+					ZoneDescObjet19=premierTitreRadar.ZoneDescObjet19;ZoneDescObjet20=premierTitreRadar.ZoneDescObjet20;ZoneDescObjet21=premierTitreRadar.ZoneDescObjet21;
+					ZoneDescObjet22=premierTitreRadar.ZoneDescObjet22;ZoneDescObjet23=premierTitreRadar.ZoneDescObjet23;ZoneDescObjet24=premierTitreRadar.ZoneDescObjet24;
+					
+					if(ZoneIdobj0>=1 && ZoneIdobj0<=9998){chargeurGfx0=new Loader();chargeurGfx0.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx0);
+					chargeurGfx0.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx0=new URLRequest(ZoneGfx0);chargeurGfx0.load(requeteGfx0, context);}
+					if(ZoneIdobj1>=1 && ZoneIdobj1<=9998){chargeurGfx1=new Loader();chargeurGfx1.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx1);
+					chargeurGfx1.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx1=new URLRequest(ZoneGfx1);chargeurGfx1.load(requeteGfx1, context);}
+					if(ZoneIdobj2>=1 && ZoneIdobj2<=9998){chargeurGfx2=new Loader();chargeurGfx2.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx2);
+					chargeurGfx2.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx2=new URLRequest(ZoneGfx2);chargeurGfx2.load(requeteGfx2, context);}
+					if(ZoneIdobj3>=1 && ZoneIdobj3<=9998){chargeurGfx3=new Loader();chargeurGfx3.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx3);
+					chargeurGfx3.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx3=new URLRequest(ZoneGfx3);chargeurGfx3.load(requeteGfx3, context);}
+					if(ZoneIdobj4>=1 && ZoneIdobj4<=9998){chargeurGfx4=new Loader();chargeurGfx4.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx4);
+					chargeurGfx4.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx4=new URLRequest(ZoneGfx4);chargeurGfx4.load(requeteGfx4, context);}
+					if(ZoneIdobj5>=1 && ZoneIdobj5<=9998){chargeurGfx5=new Loader();chargeurGfx5.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx5);
+					chargeurGfx5.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx5=new URLRequest(ZoneGfx5);chargeurGfx5.load(requeteGfx5, context);}
+					if(ZoneIdobj6>=1 && ZoneIdobj6<=9998){chargeurGfx6=new Loader();chargeurGfx6.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx6);
+					chargeurGfx6.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx6=new URLRequest(ZoneGfx6);chargeurGfx6.load(requeteGfx6, context);}
+					if(ZoneIdobj7>=1 && ZoneIdobj7<=9998){chargeurGfx7=new Loader();chargeurGfx7.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx7);
+					chargeurGfx7.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx7=new URLRequest(ZoneGfx7);chargeurGfx7.load(requeteGfx7, context);}
+					if(ZoneIdobj8>=1 && ZoneIdobj8<=9998){chargeurGfx8=new Loader();chargeurGfx8.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx8);
+					chargeurGfx8.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx8=new URLRequest(ZoneGfx8);chargeurGfx8.load(requeteGfx8, context);}
+					if(ZoneIdobj9>=1 && ZoneIdobj9<=9998){chargeurGfx9=new Loader();chargeurGfx9.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx9);
+					chargeurGfx9.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx9=new URLRequest(ZoneGfx9);chargeurGfx9.load(requeteGfx9, context);}
+					if(ZoneIdobj10>=1 && ZoneIdobj10<=9998){chargeurGfx10=new Loader();chargeurGfx10.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx10);
+					chargeurGfx10.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx10=new URLRequest(ZoneGfx10);chargeurGfx10.load(requeteGfx10, context);}
+					if(ZoneIdobj11>=1 && ZoneIdobj11<=9998){chargeurGfx11=new Loader();chargeurGfx11.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx11);
+					chargeurGfx11.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx11=new URLRequest(ZoneGfx11);chargeurGfx11.load(requeteGfx11, context);}
+					if(ZoneIdobj12>=1 && ZoneIdobj12<=9998){chargeurGfx12=new Loader();chargeurGfx12.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx12);
+					chargeurGfx12.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx12=new URLRequest(ZoneGfx12);chargeurGfx12.load(requeteGfx12, context);}
+					if(ZoneIdobj13>=1 && ZoneIdobj13<=9998){chargeurGfx13=new Loader();chargeurGfx13.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx13);
+					chargeurGfx13.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx13=new URLRequest(ZoneGfx13);chargeurGfx13.load(requeteGfx13, context);}
+					if(ZoneIdobj14>=1 && ZoneIdobj14<=9998){chargeurGfx14=new Loader();chargeurGfx14.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx14);
+					chargeurGfx14.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx14=new URLRequest(ZoneGfx14);chargeurGfx14.load(requeteGfx14, context);}
+					if(ZoneIdobj15>=1 && ZoneIdobj15<=9998){chargeurGfx15=new Loader();chargeurGfx15.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx15);
+					chargeurGfx15.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx15=new URLRequest(ZoneGfx15);chargeurGfx15.load(requeteGfx15, context);}
+					if(ZoneIdobj16>=1 && ZoneIdobj16<=9998){chargeurGfx16=new Loader();chargeurGfx16.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx16);
+					chargeurGfx16.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx16=new URLRequest(ZoneGfx16);chargeurGfx16.load(requeteGfx16, context);}
+					if(ZoneIdobj17>=1 && ZoneIdobj17<=9998){chargeurGfx17=new Loader();chargeurGfx17.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx17);
+					chargeurGfx17.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx17=new URLRequest(ZoneGfx17);chargeurGfx17.load(requeteGfx17, context);}
+					if(ZoneIdobj18>=1 && ZoneIdobj18<=9998){chargeurGfx18=new Loader();chargeurGfx18.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx18);
+					chargeurGfx18.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx18=new URLRequest(ZoneGfx18);chargeurGfx18.load(requeteGfx18, context);}
+					if(ZoneIdobj19>=1 && ZoneIdobj19<=9998){chargeurGfx19=new Loader();chargeurGfx19.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx19);
+					chargeurGfx19.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx19=new URLRequest(ZoneGfx19);chargeurGfx19.load(requeteGfx19, context);}
+					if(ZoneIdobj20>=1 && ZoneIdobj20<=9998){chargeurGfx20=new Loader();chargeurGfx20.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx20);
+					chargeurGfx20.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx20=new URLRequest(ZoneGfx20);chargeurGfx20.load(requeteGfx20, context);}
+					if(ZoneIdobj21>=1 && ZoneIdobj21<=9998){chargeurGfx21=new Loader();chargeurGfx21.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx21);
+					chargeurGfx21.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx21=new URLRequest(ZoneGfx21);chargeurGfx21.load(requeteGfx21, context);}
+					if(ZoneIdobj22>=1 && ZoneIdobj22<=9998){chargeurGfx22=new Loader();chargeurGfx22.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx22);
+					chargeurGfx22.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx22=new URLRequest(ZoneGfx22);chargeurGfx22.load(requeteGfx22, context);}
+					if(ZoneIdobj23>=1 && ZoneIdobj23<=9998){chargeurGfx23=new Loader();chargeurGfx23.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx23);
+					chargeurGfx23.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx23=new URLRequest(ZoneGfx23);chargeurGfx23.load(requeteGfx23, context);}
+					if(ZoneIdobj24>=1 && ZoneIdobj24<=9998){chargeurGfx24=new Loader();chargeurGfx24.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteGfx24);
+					chargeurGfx24.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteGfx24=new URLRequest(ZoneGfx24);chargeurGfx24.load(requeteGfx24, context);}		
+		
+					spriteRadarMap = new Sprite();
+					spriteRadarMap.x=0;spriteRadarMap.y=0;
+					spriteFond.addChild(spriteRadarMap);
+										
+									if(pseudoV20!=""){voisin20 = new betrayalUnknow();
+placementVoisin(20,abscisseAV20,ordonneeAV20,voisin20,abscisseOV20,ordonneeOV20,vitesseV20,turbineV20,timerV20,20,radarXTraitV20,radarYTraitV20,radarNbrXV20,
+radarNbrYV20,radarSec1XV20,radarSec1YV20,radarDistanceEnSecondeV20,radarV1V20,radarV2V20,radarV3V20,radarV4V20,radarDistanceKmV20,radarFXTraitV20,radarFYTraitV20);
+chargeurV20 = new Loader();chargeurV20.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteV20);
+chargeurV20.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioerror);requeteV20 = new URLRequest(avatarV20);chargeurV20.load(requeteV20, context);}
+			
+	}	
